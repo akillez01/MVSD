@@ -7,7 +7,6 @@ const SongContext = createContext();
 export const SongProvider = ({ children }) => {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [songLoading, setSongLoading] = useState(true);
 
   const [selectedSong, setSelectedSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -157,7 +156,6 @@ export const SongProvider = ({ children }) => {
         songs,
         addAlbum,
         loading,
-        songLoading,
         albums,
         addSong,
         addThumbnail,

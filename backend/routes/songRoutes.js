@@ -1,14 +1,13 @@
 import express from "express";
 import {
-  addSong,
-  addThumbnail,
+  addSong, addThumbnail,
   createAlbum,
   deleteSong,
   getAllAlbums,
   getAllSongs,
   getAllSongsByAlbum,
-  getSingleSong,
-} from "../controllers/songControllers.js";
+  getSingleSong
+} from '../controllers/songControllers.js';
 import { isAuth } from "../middlewares/isAuth.js";
 import uploadFile from "../middlewares/multer.js";
 
