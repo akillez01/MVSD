@@ -1,37 +1,43 @@
-import AlbumItem from "../components/AlbumItem";
+import React from "react";
 import Layout from "../components/Layout";
-import SongItem from "../components/SongItem";
 import { SongData } from "../context/Song";
+import AlbumItem from "../components/AlbumItem";
+import SongItem from "../components/SongItem";
 
 const Home = () => {
   const { songs, albums } = SongData();
+
+  // Verifique se albums e songs são arrays antes de usar map
+  const validAlbums = Array.isArray(albums) ? albums : [];
+  const validSongs = Array.isArray(songs) ? songs : [];
+
   return (
     <Layout>
       <div className="mb-4">
         <h1 className="my-5 font-bold text-2xl">Featured Charts</h1>
         <div className="flex overflow-auto">
-          {albums.map((e, i) => (
+          {validAlbums.map((e, i) => (
             <AlbumItem
               key={i}
-              image={e.thumbnail?.url || "default-album-image.jpg"} // Imagem padrão
-              name={e.title || "Unknown Album"}
-              desc={e.description || "No description available"}
-              id={e._id || `album-${i}`}
+              image={e.thumbnail?.url}
+              name={e.title}
+              desc={e.description}
+              id={e._id}
             />
           ))}
         </div>
       </div>
 
       <div className="mb-4">
-        <h1 className="my-5 font-bold text-2xl">biggest hits</h1>
+        <h1 className="my-5 font-bold text-2xl">Today's biggest hits</h1>
         <div className="flex overflow-auto">
-          {songs.map((e, i) => (
+          {validSongs.map((e, i) => (
             <SongItem
               key={i}
-              image={e.thumbnail?.url || "default-song-image.jpg"} // Imagem padrão
-              name={e.title || "Unknown Song"}
-              desc={e.description || "No description available"}
-              id={e._id || `song-${i}`}
+              image={e.thumbnail?.url}
+              name={e.title}
+              desc={e.description}
+              id={e._id}
             />
           ))}
         </div>
