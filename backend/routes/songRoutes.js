@@ -10,14 +10,14 @@ import {
   getSingleSong,
 } from "../controllers/songControllers.js";
 import { isAuth } from "../middlewares/isAuth.js";
-import uploadFile from "../middlewares/multer.js";
+import uploadMiddleware from "../middlewares/upload.js";
 
 const router = express.Router();
 
-router.post("/album/new", isAuth, uploadFile, createAlbum);
+router.post("/album/new", isAuth, uploadMiddleware, createAlbum);
 router.get("/album/all", isAuth, getAllAlbums);
-router.post("/new", isAuth, uploadFile, addSong);
-router.post("/:id", isAuth, uploadFile, addThumbnail);
+router.post("/new", isAuth, uploadMiddleware, addSong);
+router.post("/:id", isAuth, uploadMiddleware, addThumbnail);
 router.get("/single/:id", isAuth, getSingleSong);
 router.delete("/:id", isAuth, deleteSong);
 router.get("/all", isAuth, getAllSongs);

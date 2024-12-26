@@ -1,9 +1,9 @@
-import cloudinary from "cloudinary";
-import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
 import express from "express";
-import path from "path";
+import dotenv from "dotenv";
 import connectDb from "./database/db.js";
+import cookieParser from "cookie-parser";
+import cloudinary from "cloudinary";
+import path from "path";
 
 dotenv.config();
 
@@ -22,8 +22,8 @@ app.use(cookieParser());
 const port = process.env.PORT || 5000;
 
 //importing routes
-import songRoutes from "./routes/songRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import songRoutes from "./routes/songRoutes.js";
 
 //using routes
 app.use("/api/users", userRoutes);
