@@ -19,15 +19,15 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 
 //importing routes
 import songRoutes from "./routes/songRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 //using routes
-app.use("/api/user", userRoutes);
-app.use("/api/song", songRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/songs", songRoutes);
 
 const __dirname = path.resolve();
 

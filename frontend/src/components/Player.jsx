@@ -21,8 +21,10 @@ const Player = () => {
 
   // Carregar música selecionada
   useEffect(() => {
-    fetchSingleSong();
-  }, [selectedSong]);
+    if (selectedSong) {
+      fetchSingleSong(selectedSong);
+    }
+  }, [selectedSong, fetchSingleSong]);
 
   // Atualizar metadados e progresso do áudio
   useEffect(() => {

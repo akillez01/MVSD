@@ -1,0 +1,35 @@
+# render.yaml
+services:
+  - type: web
+    name: spotify-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URL
+        value: mongodb+srv://achillesoliveirasouza:Rk86Z5tx0bEV2vk2@cluster0.gurb2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - key: Cloud_Name
+        value: dvx0zfoyb
+      - key: Cloud_Api
+        value: 163718966178696
+      - key: Cloud_Secret
+        value: 3TWlMEFdCWfaUpOhQU6nalQN360
+      - key: Jwt_secret
+        value: JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+    rootDir: backend
+
+  - type: web
+    name: spotify-frontend
+    env: static
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: BACKEND_URL
+        value: https://spotify-backend.onrender.com
+    rootDir: frontend

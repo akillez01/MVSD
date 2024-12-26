@@ -7,9 +7,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5000", // A URL do backend
-        changeOrigin: true, // Alterar a origem para corresponder ao backend
-        secure: false, // Caso o backend use HTTP em vez de HTTPS
+        target: process.env.BACKEND_URL || "http://localhost:5000", // URL do backend para desenvolvimento
+        changeOrigin: true, // Altera a origem para corresponder ao backend
+        secure: false, // Define como false caso o backend use HTTP
       },
     },
   },
