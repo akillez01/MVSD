@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaBookmark, FaPlay, FaRegBookmark } from "react-icons/fa";
 import { SongData } from "../context/Song";
 import { UserData } from "../context/User";
@@ -8,7 +8,7 @@ const SongItem = ({ image, name, desc, id }) => {
 
   const { addToPlaylist, user } = UserData();
 
-  const { setSelectedSong, setIsPlaying } = SongData();
+  const { setSelectedSong, isPlaying, setIsPlaying } = SongData();
 
   const playList = user.playlist;
 
@@ -16,7 +16,7 @@ const SongItem = ({ image, name, desc, id }) => {
     if (playList && playList.includes(id)) {
       setSaved(true);
     }
-  }, [user, id, playList]);
+  }, [user]);
 
   const savetoPlaylistHandler = () => {
     setSaved(!saved);

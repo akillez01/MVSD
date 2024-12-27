@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaBookmark, FaPlay } from "react-icons/fa";
 import { assets } from "../assets/assets";
 import Layout from "../components/Layout";

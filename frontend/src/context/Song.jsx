@@ -6,54 +6,107 @@ const SongContext = createContext();
 
 export const SongProvider = ({ children }) => {
   const [songs, setSongs] = useState([]);
-  const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [songLoading, setSongLoading] = useState(true);
+
   const [selectedSong, setSelectedSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [song, setSong] = useState(null);
-  const [albumSong, setAlbumSong] = useState([]);
-  const [albumData, setAlbumData] = useState([]);
 
   async function fetchSongs() {
     try {
-      const { data } = await axios.get("/api/songs/all");
-      setSongs(Array.isArray(data) ? data : []);
+      const { data } = await axios.get("/api/song/all");
+
+      setSongs(data);
+      setSelectedSong(data[0]._id);
+      setIsPlaying(false);
     } catch (error) {
-      console.error("Error fetching songs:", error);
+      console.log(error);
     }
   }
+
+  const [song, setSong] = useState([]);
+
+  async function fetchSingleSong() {
+    try {
+      const { data } = await axios.get("/api/song/single/" + selectedSong);
+
+      setSong(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function addAlbum(formData, setTitle, setDescription, setFile) {
+    setLoading(true);
+    try {
+      const { data } = await axios.post("/api/song/album/new", formData);
+      toast.success(data.message);
+      setLoading(false);
+      fetchAlbums();
+      setTitle("");
+      setDescription("");
+      setFile(null);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  }
+
+  async function addSong(
+    formData,
+    setTitle,
+    setDescription,
+    setFile,
+    setSinger,
+    setAlbum
+  ) {
+    setLoading(true);
+    try {
+      const { data } = await axios.post("/api/song/new", formData);
+      toast.success(data.message);
+      setLoading(false);
+      fetchSongs();
+      setTitle("");
+      setDescription("");
+      setFile(null);
+      setSinger("");
+      setAlbum("");
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  }
+
+  async function addThumbnail(id, formData, setFile) {
+    setLoading(true);
+    try {
+      const { data } = await axios.post("/api/song/" + id, formData);
+      toast.success(data.message);
+      setLoading(false);
+      fetchSongs();
+      setFile(null);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  }
+
+  const [albums, setAlbums] = useState([]);
 
   async function fetchAlbums() {
     try {
-      const { data } = await axios.get("/api/songs/album/all");
-      setAlbums(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error("Error fetching albums:", error);
-    }
-  }
+      const { data } = await axios.get("/api/song/album/all");
 
-  async function fetchSingleSong(id) {
-    try {
-      const { data } = await axios.get(`/api/songs/single/${id}`);
-      setSong(data);
+      setAlbums(data);
     } catch (error) {
-      console.error("Error fetching single song:", error);
-    }
-  }
-
-  async function fetchAlbumSong(id) {
-    try {
-      const { data } = await axios.get(`/api/songs/album/${id}`);
-      setAlbumSong(data.songs);
-      setAlbumData(data.album);
-    } catch (error) {
-      console.error("Error fetching album songs:", error);
+      console.log(error);
     }
   }
 
   async function deleteSong(id) {
     try {
-      const { data } = await axios.delete(`/api/songs/${id}`);
+      const { data } = await axios.delete("/api/song/" + id);
+
       toast.success(data.message);
       fetchSongs();
     } catch (error) {
@@ -66,24 +119,62 @@ export const SongProvider = ({ children }) => {
     fetchAlbums();
   }, []);
 
+  const [index, setIndex] = useState(0);
+
+  function nextMusic() {
+    if (index === songs.length - 1) {
+      setIndex(0);
+      setSelectedSong(songs[0]._id);
+    } else {
+      setIndex(index + 1);
+      setSelectedSong(songs[index + 1]._id);
+    }
+  }
+  function prevMusic() {
+    if (index === 0) {
+      return null;
+    } else {
+      setIndex(index - 1);
+      setSelectedSong(songs[index - 1]._id);
+    }
+  }
+
+  const [albumSong, setAlbumSong] = useState([]);
+  const [albumData, setAlbumData] = useState([]);
+
+  async function fetchAlbumSong(id) {
+    try {
+      const { data } = await axios.get("/api/song/album/" + id);
+      setAlbumSong(data.songs);
+      setAlbumData(data.album);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <SongContext.Provider
       value={{
         songs,
-        albums,
+        addAlbum,
         loading,
-        fetchSongs,
-        fetchAlbums,
-        fetchSingleSong,
-        fetchAlbumSong,
+        songLoading,
+        albums,
+        addSong,
+        addThumbnail,
         deleteSong,
-        selectedSong,
+        fetchSingleSong,
+        song,
         setSelectedSong,
         isPlaying,
         setIsPlaying,
-        song,
+        selectedSong,
+        nextMusic,
+        prevMusic,
+        fetchAlbumSong,
         albumSong,
         albumData,
+        fetchSongs,
+        fetchAlbums,
       }}
     >
       {children}

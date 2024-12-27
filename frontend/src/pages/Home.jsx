@@ -6,7 +6,6 @@ import { SongData } from "../context/Song";
 
 const Home = () => {
   const { songs, albums } = SongData();
-
   return (
     <Layout>
       <div className="mb-4">
@@ -15,10 +14,10 @@ const Home = () => {
           {albums.map((e, i) => (
             <AlbumItem
               key={i}
-              image={e.thumbnail?.url || "default-album-image.jpg"} // Imagem padrão
-              name={e.title || "Unknown Album"}
-              desc={e.description || "No description available"}
-              id={e._id || `album-${i}`}
+              image={e.thumbnail.url}
+              name={e.title}
+              desc={e.description}
+              id={e._id}
             />
           ))}
         </div>
@@ -30,10 +29,10 @@ const Home = () => {
           {songs.map((e, i) => (
             <SongItem
               key={i}
-              image={e.thumbnail?.url || "default-song-image.jpg"} // Imagem padrão
-              name={e.title || "Unknown Song"}
-              desc={e.description || "No description available"}
-              id={e._id || `song-${i}`}
+              image={e.thumbnail.url}
+              name={e.title}
+              desc={e.description}
+              id={e._id}
             />
           ))}
         </div>

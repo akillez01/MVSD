@@ -17,9 +17,7 @@ const Admin = () => {
   } = SongData();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    if (user && user.role !== "admin") navigate("/");
-  }, [user, navigate]);
+  if (user && user.role !== "admin") return navigate("/");
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
